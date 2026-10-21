@@ -1,6 +1,9 @@
 #ifndef NFC_H
 #define NFC_H
 #include "app.h"
+#define NFC_MIRROR_BLOCK 0x24U
+#define NFC_RF_PAGE (NFC_MIRROR_BLOCK*4U)
+#define NFC_RF_LAST_BLOCK (NFC_MIRROR_BLOCK+3U)
 typedef struct {
     uint32_t magic, stage, error, command, argument, completed, failures;
     uint32_t ns_reg, poll_count, packets, crc_errors, received, transfer, image_crc;

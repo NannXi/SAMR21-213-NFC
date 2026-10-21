@@ -2,11 +2,11 @@
 
 LG Innotek ESL TAG2.13B 的 **Keil5 C 固件 + 原生 Android 图片编辑与 NFC 上传应用**。
 
-> **v0.1.1 是故障诊断预览版，请升级 APK 后重测。** 已实测 MCU → I²C → NFC SRAM → 协议校验 → 屏幕刷新；v0.1.0 已在手机扫描到标签，但握手或 transceive 失败；v0.1.1 已修订板端和应用，仍待手机重测，不能把 SWD 测试当成手机传图成功。
+> **v0.1.2 是邮箱锁位修订预览版，须配套升级 APK 和固件。** 已实测 MCU → I²C → NFC SRAM → 协议校验 → 屏幕刷新；v0.1.0 已在手机扫描到标签，但握手或 transceive 失败；v0.1.1 手机已读到有效身份但第一条写入失败；v0.1.2 已迁移邮箱并修改交接时序，仍待手机重测，不能把 SWD 测试当成手机传图成功。
 
 ## 下载与使用
 
-在 [Releases](https://github.com/NannXi/SAMR21-213-NFC/releases) 下载 `epaper-nfc-v0.1.1-debug.apk`。Android 8.0 及以上，手机需 NFC-A；当前 APK 使用开发测试签名。不开启联网，不申请照片库或存储权限，通过系统文件选择器选图。
+在 [Releases](https://github.com/NannXi/SAMR21-213-NFC/releases) 下载 `epaper-nfc-v0.1.2-debug.apk`。Android 8.0 及以上，手机需 NFC-A；当前 APK 使用开发测试签名。不开启联网，不申请照片库或存储权限，通过系统文件选择器选图。
 
 1. 主板保持原来已验证的 **3.3 V 供电**，烧录配套固件，等待上电示例画面刷新完成（约 15 秒）。
 2. 手机安装 APK，打开 NFC，选择图片。
@@ -36,7 +36,7 @@ LG Innotek ESL TAG2.13B 的 **Keil5 C 固件 + 原生 Android 图片编辑与 NF
 - NFC I²C 地址 `0x55`，SRAM `0xF8..0xFB` 64 字节读写、会话寄存器镜像配置实测。
 - 整图 5512 字节传输、重复分块、错误偏移、包 CRC 拒收、提交后刷新与 DONE 确认实测；见验证 JSON。
 - Android 核心 Java 单测通过，APK 编译并通过 v2/v3 签名验证；0.1.1 与前版使用同一开发签名，可覆盖安装。
-- **待测：v0.1.1 手机端到端传图、RF ↔ SRAM、RF/I²C 仲裁、实际传输速度、手机离场与电压跌落恢复。**
+- **待测：v0.1.2 手机端到端传图、RF ↔ SRAM、RF/I²C 仲裁、实际传输速度、手机离场与电压跌落恢复。**
 - NFC 芯片具体型号尚未确定，行为与 NXP NTAG I²C 兼容；不能仅靠寄存器布局断言为某个 Plus 型号。
 
 日期：2026-10-21。
@@ -44,3 +44,13 @@ LG Innotek ESL TAG2.13B 的 **Keil5 C 固件 + 原生 Android 图片编辑与 NF
 ## v0.1.1 故障排查
 
 0.1.0 的 GPIO 软件 I²C 长时间轮询出现 HardFault，且手机报告握手未识别、TagLost / transceive failed。0.1.1 改为原板 SERCOM1 硬件 I²C、减少轮询并留 RF 空闲时隙，增加镜像恢复与初始化重试；应用等待握手最多 6 秒。失败弹窗可点“复制诊断”，包含手机型号、UID、READ 原始数据和失败命令，无需 root/Shizuku。收到 transceive failed 不能单凭文字认定手机移开。
+
+## v0.1.2 邮箱迁移（2026-10-21）
+
+手机日志已读取完整 EPA1、UID 和尺寸，但第一条 A2 04 写命令失败。旧邮箱选址有误：静态锁 F0 FF，RF 04h..0Fh 只读；动态锁 FF 00 00，RF 10h..8Fh 也被锁定。动态锁在 I2C block38h 字节8..10，不在块首。
+
+新邮箱 RF 90h..9Fh，I2C镜像块24h，目标动态锁byte1 bit0清零。保持全部锁位、用户EEPROM和持久配置不变。Android先只读锁位、校验UID/签名/邮箱版本再写。固件和APK须同时升级至0.1.2。
+
+RF场存在时MCU只读会话寄存器；手机每读完邮箱后静默90ms，MCU在最后块读取事件20ms后访问SRAM。LAST_NDEF_BLOCK=27h，手机presence-check间隔1秒。响应字节39=90h，40=布局修订2。写完一帧后额外READ9Ch发出交接事件。无RF场时50ms轮询，镜像配置每500ms检查恢复。
+
+板端SWD经真实I2C到SRAM整图5512字节、重复包、CRC、刷新和DONE通过。手机0.1.2端到端仍待验证；不能把电脑测试当成手机上传成功。0.1.1的3004失败仍可能涉及仲裁，不能仅凭异常判定手机移开。

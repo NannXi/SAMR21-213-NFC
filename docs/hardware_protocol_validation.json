@@ -3,6 +3,9 @@
   "phone_rf_tested": false,
   "checks": [
     "volatile SRAM mirror enabled",
+    "RF mailbox 90h..9fh and final-block read trigger configured",
+    "factory static page locks preserved",
+    "dynamic locks FF0000 preserved, target page lock bit is clear",
     "BEGIN accepted",
     "first chunk accepted",
     "duplicate DATA is idempotent",
@@ -26,12 +29,12 @@
     0,
     0,
     55,
-    2327,
+    2675,
+    1,
     0,
-    0,
-    1231,
+    15674,
     128,
-    2,
+    1,
     5512,
     556925537,
     3924413575
@@ -40,16 +43,15 @@
     1162888241,
     6,
     0,
-    94406,
+    115222,
     0,
     2,
     2,
     0,
     16,
-    14978,
-    25,
+    14973,
+    24,
     119,
     5521
-  ],
-  "version": "0.1.1"
+  ]
 }

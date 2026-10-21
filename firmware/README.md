@@ -9,7 +9,7 @@ python -m venv .venv
 .\flash.ps1 -Action flash
 ```
 
-输出 `Objects/epd_white.axf/.bin/.hex` 名称继承初始工程，目前为 NFC 版。Release 同时提供清楚命名的 `samr21-nfc-v0.1.1.bin/.hex`，内容一致。Keil 内置下载用的 SAMR21 FLM 尚未配置，当前外部 SWD 工具是已验证路径。
+输出 `Objects/epd_white.axf/.bin/.hex` 名称继承初始工程，目前为 NFC 版。Release 同时提供清楚命名的 `samr21-nfc-v0.1.2.bin/.hex`，内容一致。Keil 内置下载用的 SAMR21 FLM 尚未配置，当前外部 SWD 工具是已验证路径。
 
 保持已验证的 ST-Link 3.3 V/GND/PA31 SWDIO/PA30 SWCLK 接法。默认探针序列号沿用实物，可通过环境变量 `EPD_PROBE_SERIAL` 设置。工具先备份、双读一致后编程，最后写复位向量，再做 256 KiB 全量回读与辅助区校验。不要使用整片擦除或自动解锁。
 

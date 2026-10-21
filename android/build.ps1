@@ -1,4 +1,4 @@
-﻿param(
+param(
     [Parameter(Mandatory=$true)][string]$JavaHome,
     [Parameter(Mandatory=$true)][string]$AndroidSdk,
     [string]$BuildToolsVersion='35.0.0',
@@ -30,7 +30,7 @@ if(!$KeyStore){$KeyStore=Join-Path $build 'android-debug.keystore'}
 if(!(Test-Path $KeyStore)){
     Run (Join-Path $JavaHome 'bin\keytool.exe') @('-genkeypair','-keystore',$KeyStore,'-storepass','android','-keypass','android','-alias','androiddebugkey','-keyalg','RSA','-keysize','2048','-validity','10000','-dname','CN=Android Debug,O=Android,C=US')
 }
-$apk=Join-Path $release 'epaper-nfc-v0.1.1-debug.apk'
+$apk=Join-Path $release 'epaper-nfc-v0.1.2-debug.apk'
 Run (Join-Path $tools 'apksigner.bat') @('sign','--ks',$KeyStore,'--ks-pass','pass:android','--key-pass','pass:android','--out',$apk,$aligned)
 Run (Join-Path $tools 'apksigner.bat') @('verify','--verbose',$apk)
 Get-FileHash $apk -Algorithm SHA256

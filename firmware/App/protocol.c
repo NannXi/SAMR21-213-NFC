@@ -26,6 +26,7 @@ static void response(const uint8_t *request,uint8_t result) {
     reply[16]=display_state;reply[17]=1;put16(reply+18,212);put16(reply+20,104);put16(reply+22,FRAME_BYTES);
     put32(reply+24,expected_crc);put32(reply+28,0x31525742U);
     for(i=0;i<7;++i)reply[32+i]=g_nfc.uid[i];
+    reply[39]=NFC_RF_PAGE;reply[40]=2; /* RF layout/timing revision. */
     put32(reply+60,protocol_crc32(reply,60));reply_pending=1;
 }
 static int write_reply(void) {
@@ -77,16 +78,32 @@ void protocol_init(void) {
 }
 void protocol_poll(void) {
     uint8_t request[64];uint32_t i;
-    static uint32_t last_poll,last_mirror_check; uint8_t nc;
+    static uint32_t last_poll,last_mirror_check,rf_due;
+    static uint8_t rf_work; uint8_t nc,ns,mirror;
     if(g_nfc.stage!=5)return;
-    if((uint32_t)(g_status.ticks_ms-last_poll)<50U)return;
+    if((uint32_t)(g_status.ticks_ms-last_poll)<5U)return;
     last_poll=g_status.ticks_ms;g_nfc.poll_count++;
+    /* Session reads do not acquire the SRAM/EEPROM lock. RF reads of the
+       final mirrored block set NDEF_DATA_READ; the app then leaves a
+       90 ms quiet interval for this 20 ms deferred I2C transaction. */
+    if(!nfc_read_reg(6,&ns))return;
+    g_nfc.ns_reg=ns;
+    /* Check volatile configuration even before an RF trigger: RF POR may
+       reset the mirror, so waiting for the old trigger would deadlock. */
     if((uint32_t)(g_status.ticks_ms-last_mirror_check)>=500U) {
         last_mirror_check=g_status.ticks_ms;
-        if(nfc_read_reg(0,&nc)&&(nc&0x43U)!=3U) {
+        if(nfc_read_reg(0,&nc)&&nfc_read_reg(2,&mirror)&&((nc&0x43U)!=3U||mirror!=NFC_MIRROR_BLOCK)) {
             if(!nfc_mirror(1))return;
-            protocol_init();
+            protocol_init();return;
         }
+    }
+    if(ns&1U) {
+        if(ns&0x80U) {rf_work=1;rf_due=g_status.ticks_ms+20U;}
+        if(!rf_work||(int32_t)(g_status.ticks_ms-rf_due)<0||(ns&0x20U))return;
+        rf_work=0;
+    } else {
+        rf_work=0;
+        if((g_nfc.poll_count%10U)!=0U)return;
     }
     if(reply_pending) {if(write_reply())reply_pending=0;else {nfc_write_reg(6,0x40,0);return;}}
     if(pending_display&&!reply_pending) {pending_display=0;g_status.command=7;return;}

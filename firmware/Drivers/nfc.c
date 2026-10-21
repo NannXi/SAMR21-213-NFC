@@ -93,7 +93,12 @@ int nfc_mirror(int enabled) {
     uint8_t empty[16]={0};
     if(enabled) {
         for(i=0;i<4;++i)if(!nfc_write_sram((uint8_t)(0xf8U+i),empty))return 0;
-        if(!nfc_write_reg(2,0xff,1))return 0;
+        /* Static locks F0 FF, dynamic locks FF 00 00 on this board.
+           RF pages 90..9f use dynamic lock byte 1 bit 0, verified clear.
+           Dynamic lock bytes occupy offsets 8..10 in I2C block 38. */
+        if(g_nfc.config38[9]&1U)return 0;
+        if(!nfc_write_reg(2,0xff,NFC_MIRROR_BLOCK))return 0;
+        if(!nfc_write_reg(1,0xff,NFC_RF_LAST_BLOCK))return 0;
     }
     if(!nfc_write_reg(0,0x43,enabled?0x03:0x01))return 0;
     if(!nfc_write_reg(6,0x40,0))return 0;
