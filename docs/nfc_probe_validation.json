@@ -1,0 +1,28 @@
+{
+  "eeprom_bytes": 896,
+  "eeprom_sha256": "aa2fadb624c42d9080efaa951cda56df7e70629cf3d91661896b21ebaacf4b55",
+  "uid_block": "04169a6a1e4480004400f0ffe1106d00",
+  "config_38": "0000000000000000ff00000000000000",
+  "config_3a": "0100f848080100000000000000000000",
+  "session_before": [
+    1,
+    0,
+    248,
+    72,
+    8,
+    1,
+    0
+  ],
+  "sram_64_byte_write_readback_match": true,
+  "session_mirror_enabled": [
+    3,
+    0,
+    1,
+    72,
+    8,
+    1,
+    0
+  ],
+  "mirror_enabled_in_volatile_session_only": true,
+  "eeprom_write_operations": 0
+}

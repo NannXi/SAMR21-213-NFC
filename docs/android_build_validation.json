@@ -1,0 +1,14 @@
+{
+  "date": "2026-10-21",
+  "jdk": "Zulu OpenJDK 17.0.20.1",
+  "platform_api": 35,
+  "build_tools": "35.0.0",
+  "java_core_tests": "PASS: palette, native orientation/corners, plane polarity, dithering, CRC32 and wire layout",
+  "apk_signature_schemes": [
+    "v2",
+    "v3"
+  ],
+  "apk_sha256": "792822b52c92435f6b870200722921459fa136f59d9e38c454a1f36d0b022bd8",
+  "android_device_runtime_tested": false,
+  "phone_nfc_rf_tested": false
+}
