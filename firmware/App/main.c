@@ -53,6 +53,6 @@ int main(void)
                 g_status.stage = 0xe0;
             }
         }
-        __WFI();
+        __NOP(); /* NFC preview: stay awake; low power is not enabled. */
     }
 }

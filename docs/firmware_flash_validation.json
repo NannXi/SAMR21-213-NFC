@@ -1,5 +1,5 @@
 {
-  "utc": "2026-10-21T03:46:15.655447+00:00",
+  "utc": "2026-10-21T04:11:51.775274+00:00",
   "action": "flash",
   "events": [
     {
@@ -8,8 +8,8 @@
     },
     {
       "kind": "preflight_passed",
-      "backup_sha256": "846b98aa5df17d80449855b18fae6edb66814f8cb78fbaa67ddc764c1e85031b",
-      "differing_bytes": 5624
+      "backup_sha256": "9b5a7be388d736c2aa152e81c2fe7de108bae692524c38582ef2695ff2bbd846",
+      "differing_bytes": 5607
     },
     {
       "kind": "nvm_configured",
@@ -23,15 +23,15 @@
     {
       "kind": "application_started",
       "reset_pc": "0xc0",
-      "image_bytes": 5588,
-      "programmed_rows": 22
+      "image_bytes": 5828,
+      "programmed_rows": 23
     },
     {
       "kind": "application_stage",
       "magic": 1162888241,
       "stage": 1,
       "error": 0,
-      "ticks_ms": 199,
+      "ticks_ms": 198,
       "command": 0,
       "completed": 0,
       "last_epd_command": 0,
@@ -47,12 +47,12 @@
       "magic": 1162888241,
       "stage": 2,
       "error": 0,
-      "ticks_ms": 803,
+      "ticks_ms": 400,
       "command": 0,
       "completed": 0,
       "last_epd_command": 4,
-      "busy": 1,
-      "busy_wait_ms": 2,
+      "busy": 0,
+      "busy_wait_ms": 0,
       "refresh_ms": 0,
       "temperature_raw": 0,
       "border": 119,
@@ -63,30 +63,30 @@
       "magic": 1162888241,
       "stage": 3,
       "error": 0,
-      "ticks_ms": 1005,
+      "ticks_ms": 603,
       "command": 0,
       "completed": 0,
       "last_epd_command": 16,
       "busy": 0,
       "busy_wait_ms": 47,
       "refresh_ms": 0,
-      "temperature_raw": 24,
+      "temperature_raw": 25,
       "border": 119,
-      "bytes_sent": 1443
+      "bytes_sent": 1058
     },
     {
       "kind": "application_stage",
       "magic": 1162888241,
       "stage": 4,
       "error": 0,
-      "ticks_ms": 1610,
+      "ticks_ms": 1411,
       "command": 0,
       "completed": 0,
       "last_epd_command": 18,
       "busy": 1,
-      "busy_wait_ms": 135,
+      "busy_wait_ms": 128,
       "refresh_ms": 0,
-      "temperature_raw": 24,
+      "temperature_raw": 25,
       "border": 119,
       "bytes_sent": 5520
     },
@@ -95,14 +95,14 @@
       "magic": 1162888241,
       "stage": 5,
       "error": 0,
-      "ticks_ms": 16530,
+      "ticks_ms": 16335,
       "command": 0,
       "completed": 0,
       "last_epd_command": 2,
       "busy": 0,
       "busy_wait_ms": 16,
-      "refresh_ms": 14970,
-      "temperature_raw": 24,
+      "refresh_ms": 14980,
+      "temperature_raw": 25,
       "border": 119,
       "bytes_sent": 5521
     },
@@ -111,21 +111,21 @@
       "magic": 1162888241,
       "stage": 6,
       "error": 0,
-      "ticks_ms": 16733,
+      "ticks_ms": 16539,
       "command": 0,
       "completed": 1,
       "last_epd_command": 2,
       "busy": 0,
       "busy_wait_ms": 16,
-      "refresh_ms": 14970,
-      "temperature_raw": 24,
+      "refresh_ms": 14980,
+      "temperature_raw": 25,
       "border": 119,
       "bytes_sent": 5521
     }
   ],
   "errors": [],
   "success": true,
-  "status_address": "0x20000020",
+  "status_address": "0x2000002c",
   "preflight": {
     "did": "0x10010319",
     "param": "0x31000",
@@ -134,10 +134,10 @@
     "wdt_ctrl": "0x0",
     "pc": "0xc0"
   },
-  "backup_sha256": "846b98aa5df17d80449855b18fae6edb66814f8cb78fbaa67ddc764c1e85031b",
+  "backup_sha256": "9b5a7be388d736c2aa152e81c2fe7de108bae692524c38582ef2695ff2bbd846",
   "backup_double_read_match": true,
   "before_vs_factory": {
-    "different_bytes": 5624,
+    "different_bytes": 5607,
     "first_offsets": [
       "0x0",
       "0x1",
@@ -173,9 +173,9 @@
       "0x64"
     ]
   },
-  "firmware_bytes": 5588,
-  "firmware_sha256": "f4f8196332683528c7e043289006e14b034b46b22f5948fdb9d94c0b1d301865",
-  "programmed_rows": 22,
+  "firmware_bytes": 5828,
+  "firmware_sha256": "2bae823789fd2597e5b71c51eb46aa66af57dbf2440ab5ea4f9d02ff4a395c5e",
+  "programmed_rows": 23,
   "auxiliary_unchanged": true,
   "full_flash_readback_match": true,
   "unwritten_flash_preserved": true,
@@ -183,14 +183,14 @@
     "magic": 1162888241,
     "stage": 6,
     "error": 0,
-    "ticks_ms": 16733,
+    "ticks_ms": 16539,
     "command": 0,
     "completed": 1,
     "last_epd_command": 2,
     "busy": 0,
     "busy_wait_ms": 16,
-    "refresh_ms": 14970,
-    "temperature_raw": 24,
+    "refresh_ms": 14980,
+    "temperature_raw": 25,
     "border": 119,
     "bytes_sent": 5521
   },

@@ -7,7 +7,7 @@
 | 项目 | 本板结果 |
 |---|---|
 | I²C 七位地址 | 55h |
-| SDA / SCL | PA16 / PA17，原 SERCOM1 引脚，目前开漏软件 I²C |
+| SDA / SCL | PA16 / PA17，原 SERCOM1 引脚，v0.1.1 使用 SERCOM1 硬件 I²C |
 | PA15 | 固件设为高，沿用原初始化，具体电路角色未单独测绘 |
 | UID | 04 16 9A 6A 1E 44 80 |
 | CC | E1 10 6D 00，声明 872 字节数据区，不是总容量证明 |
@@ -29,7 +29,7 @@ SWD 测试没有经过手机的 RF 接口。测试中的调试命令与协议在
 
 ## 待实机确认
 
-Android 界面运行、RF ↔ SRAM 映射、手机读 UID 与签名、RF/I²C 仲裁、吞吐、移开手机恢复、RF 场上电的镜像状态、VCC 跌落、各种手机兼容性。尚未有 ADB 手机连接。芯片精确型号、射频供电刷新与电池续航仍未知。
+Android 界面运行、RF ↔ SRAM 映射、手机读 UID 与签名、RF/I²C 仲裁、吞吐、移开手机恢复、RF 场上电的镜像状态、VCC 跌落、各种手机兼容性。用户手机已安装应用并提供失败现象，目前没有 ADB 连接用于直接抓取日志。芯片精确型号、射频供电刷新与电池续航仍未知。
 
 当前应保留主板稳定 3.3 V 供电。原代 NXP 文档说明 SRAM 仅在 VCC 供电时可用，掉电后镜像地址回到 EEPROM；手机写到一半时断电有影响原 NDEF 的风险。本板 EEPROM 已留备份，但本版没有发布自动恢复 EEPROM 或修改锁定位的操作。
 
@@ -46,3 +46,8 @@ Android 界面运行、RF ↔ SRAM 映射、手机读 UID 与签名、RF/I²C �
 - NXP NT3H1101/NT3H1201 数据手册 Rev.3.3 (2015-07-15)，第 8.3、8.3.13、11 节：[厂商文档镜像](https://download.mikroe.com/documents/datasheets/nt3h1101-1201.pdf)。用于理解兼容寄存器，不表示已确认本板料号。
 - NXP NT3H2111/NT3H2211 Rev.3.6 (2023-07-21)：[NXP 原文](https://www.nxp.com/docs/en/data-sheet/NT3H2111_2211.pdf)，仅交叉参考。
 - [Android NfcA](https://developer.android.com/reference/android/nfc/tech/NfcA)、[NfcAdapter ReaderMode](https://developer.android.com/reference/android/nfc/NfcAdapter)。
+
+
+## 2026-10-21 手机初测与修订
+
+用户已在手机尝试 v0.1.0：曾提示未识别配套固件、TagLost 和 transceive failed，使用电池供电也复现。电脑端曾捕获 GPIO I²C 轮询中的 HardFault，因此 v0.1.0 不能视为可用上传版本。v0.1.1 切换原引脚 SERCOM1、增加 RF 空闲窗口和镜像/初始化重试；APK 身份握手等待最长 6 秒，错误对话框可复制命令、原始 READ 数据、UID 与手机型号。根因尚不能仅凭这些错误断定；修订后仍需手机重测。

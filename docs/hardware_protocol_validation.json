@@ -1,5 +1,5 @@
 {
-  "transport": "SWD debug commands -> MCU bitbang I2C -> NFC SRAM -> MCU protocol",
+  "transport": "SWD debug commands -> MCU SERCOM1 hardware I2C -> NFC SRAM -> MCU protocol",
   "phone_rf_tested": false,
   "checks": [
     "volatile SRAM mirror enabled",
@@ -26,10 +26,10 @@
     0,
     0,
     55,
-    1747,
+    2327,
     0,
     0,
-    6349,
+    1231,
     128,
     2,
     5512,
@@ -40,15 +40,16 @@
     1162888241,
     6,
     0,
-    252547,
+    94406,
     0,
     2,
     2,
     0,
     16,
-    14971,
-    24,
+    14978,
+    25,
     119,
     5521
-  ]
+  ],
+  "version": "0.1.1"
 }

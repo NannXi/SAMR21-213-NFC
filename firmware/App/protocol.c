@@ -77,15 +77,24 @@ void protocol_init(void) {
 }
 void protocol_poll(void) {
     uint8_t request[64];uint32_t i;
-    static uint32_t last_poll;
+    static uint32_t last_poll,last_mirror_check; uint8_t nc;
     if(g_nfc.stage!=5)return;
-    if((uint32_t)(g_status.ticks_ms-last_poll)<8U)return;
+    if((uint32_t)(g_status.ticks_ms-last_poll)<50U)return;
     last_poll=g_status.ticks_ms;g_nfc.poll_count++;
+    if((uint32_t)(g_status.ticks_ms-last_mirror_check)>=500U) {
+        last_mirror_check=g_status.ticks_ms;
+        if(nfc_read_reg(0,&nc)&&(nc&0x43U)!=3U) {
+            if(!nfc_mirror(1))return;
+            protocol_init();
+        }
+    }
     if(reply_pending) {if(write_reply())reply_pending=0;else {nfc_write_reg(6,0x40,0);return;}}
     if(pending_display&&!reply_pending) {pending_display=0;g_status.command=7;return;}
-    for(i=0;i<4;++i)if(!nfc_read_block((uint8_t)(0xf8+i),request+i*16)) {nfc_write_reg(6,0x40,0);return;}
+    for(i=0;i<1;++i)if(!nfc_read_block((uint8_t)(0xf8+i),request+i*16)) {nfc_write_reg(6,0x40,0);return;}
     nfc_write_reg(6,0x40,0);
     if(request[0]=='E'&&request[1]=='P'&&request[2]=='D'&&request[3]=='1') {
+        for(i=1;i<4;++i)if(!nfc_read_block((uint8_t)(0xf8+i),request+i*16)) {nfc_write_reg(6,0x40,0);return;}
+        nfc_write_reg(6,0x40,0);
         if(protocol_crc32(request,60)==get32(request+60)) {accept(request);if(pending_display&&!reply_pending) {pending_display=0;g_status.command=7;}}
         else {g_nfc.crc_errors++;return;}
     }

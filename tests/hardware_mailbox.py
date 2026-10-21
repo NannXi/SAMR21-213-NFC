@@ -4,7 +4,7 @@ import sys,time,struct,zlib,json,hashlib
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'firmware/Tools'))
 from flash_app import connect,symbols
-sym=symbols();base=sym['g_nfc'];status=sym['g_status'];report={'transport':'SWD debug commands -> MCU bitbang I2C -> NFC SRAM -> MCU protocol','phone_rf_tested':False,'checks':[]}
+sym=symbols();base=sym['g_nfc'];status=sym['g_status'];report={'transport':'SWD debug commands -> MCU SERCOM1 hardware I2C -> NFC SRAM -> MCU protocol','phone_rf_tested':False,'checks':[]}
 def packet(op,seq,tid,offset,payload=b''):
  b=bytearray(64);b[:4]=b'EPD1';struct.pack_into('<BBHIHB',b,4,1,op,seq,tid,offset,len(payload));b[16:16+len(payload)]=payload;struct.pack_into('<I',b,60,zlib.crc32(b[:60]));return b
 with connect() as session:
@@ -16,7 +16,10 @@ with connect() as session:
   while time.monotonic()<end:
    if t.read32(base+20)!=before:
     err=t.read32(base+8)
-    if err:raise RuntimeError(f'debug command {code}/{arg:02x}: {err:x}')
+    if err:
+     if time.monotonic()<end-.05:
+      before=t.read32(base+20);time.sleep(.012);t.write32(base+16,arg);t.write32(base+12,code);t.flush();continue
+     raise RuntimeError(f'debug command {code}/{arg:02x}: {err:x}')
     return bytes(t.read_memory_block8(base+112,16))
    time.sleep(.001)
   raise TimeoutError('debug command')

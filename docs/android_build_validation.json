@@ -8,7 +8,11 @@
     "v2",
     "v3"
   ],
-  "apk_sha256": "792822b52c92435f6b870200722921459fa136f59d9e38c454a1f36d0b022bd8",
+  "apk_sha256": "96f0f40465825128924969654946f2d8d203336f260eecb2c89099d512b29534",
   "android_device_runtime_tested": false,
-  "phone_nfc_rf_tested": false
+  "phone_nfc_rf_tested": true,
+  "version": "0.1.1",
+  "user_phone_result_v0_1_0": "Tag discovered; firmware identity or transceive failed; no successful upload",
+  "phone_nfc_upload_success": false,
+  "version_0_1_1_phone_test_pending": true
 }

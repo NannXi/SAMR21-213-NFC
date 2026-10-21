@@ -2,9 +2,9 @@
 
 ## 传输和存储
 
-MCU 使用 PA16 SDA、PA17 SCL 软件 I²C，地址 0x55。I²C SRAM 块 F8..FB，共 64 字节。会话寄存器 FE:2=01，FE:0 的掩码 43 写 03（镜像开、直通关、方向位 1），RF 页 04..13h 映射 SRAM。只改会话寄存器，不改 EEPROM 配置。
+MCU 使用 PA16 SDA、PA17 SCL SERCOM1 硬件 I²C，地址 0x55。I²C SRAM 块 F8..FB，共 64 字节。会话寄存器 FE:2=01，FE:0 的掩码 43 写 03（镜像开、直通关、方向位 1），RF 页 04..13h 映射 SRAM。只改会话寄存器，不改 EEPROM 配置。
 
-NFC EEPROM 的 0..55 块现场备份见 `nfc_eeprom_before.bin`。镜像在 VCC/POR 后失效，固件启动配置；RF 上电时是否会影响该批次镜像需真机确认。此版不是固定 F0..FFh SRAM pass-through 协议。
+NFC EEPROM 的 0..55 块现场备份见 `nfc_eeprom_before.bin`。镜像在 VCC/POR 后失效，固件启动配置并每 500 ms 检查恢复；RF 上电时是否会影响该批次镜像需真机确认。此版不是固定 F0..FFh SRAM pass-through 协议。
 
 Android `NfcA`：READ 30h + 页号，返回 16 字节；WRITE A2h + 页号 + 4 字节，ACK 低四位 Ah。读四组 16 字节组成邮箱。写时先清第一页，再写后十五页，最后提交第一页。MCU 回应同样先清第一块、写后三块、最后写第一块。CRC32 拒绝并发造成的不完整帧；magic 顺序不构成硬件原子事务。
 
@@ -46,3 +46,8 @@ BEGIN seq=0、offset=0、len=11：payload 为 u16 宽 212、u16 高 104、u32 �
 | 红 | 0 | 0 |
 
 画布输出量化三色，不传灰度。整图在 RAM 暂存，收齐前保留旧画面；掉电后不会保存上传图像，上电显示内置示例。
+
+
+## v0.1.1 仲裁调整
+
+使用 SERCOM1 约 100 kHz 硬件 I²C 替换高频 GPIO 模拟驱动。空闲轮询间隔至少 50 ms，先读一块，仅发现 EPD1 请求时才读其余三块，减轻与手机读写争用。镜像失效后重新初始化协议；初始化失败每秒重试。此版 CPU 常醒，关闭 NVM 自动睡眠和缓存作为诊断稳定性配置，未声称解决低功耗。

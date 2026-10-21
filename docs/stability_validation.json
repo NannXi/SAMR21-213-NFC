@@ -1,0 +1,283 @@
+{
+  "version": "0.1.1",
+  "duration_seconds": 125.4,
+  "samples": [
+    {
+      "wall_seconds": 0.3,
+      "ticks_ms": 164977,
+      "display_stage": 6,
+      "display_error": 0,
+      "nfc_stage": 5,
+      "nfc_error": 0,
+      "packets": 128,
+      "polls": 2642,
+      "i2c_naks": 0
+    },
+    {
+      "wall_seconds": 5.3,
+      "ticks_ms": 169962,
+      "display_stage": 6,
+      "display_error": 0,
+      "nfc_stage": 5,
+      "nfc_error": 0,
+      "packets": 128,
+      "polls": 2742,
+      "i2c_naks": 0
+    },
+    {
+      "wall_seconds": 10.3,
+      "ticks_ms": 174948,
+      "display_stage": 6,
+      "display_error": 0,
+      "nfc_stage": 5,
+      "nfc_error": 0,
+      "packets": 128,
+      "polls": 2842,
+      "i2c_naks": 0
+    },
+    {
+      "wall_seconds": 15.3,
+      "ticks_ms": 179935,
+      "display_stage": 6,
+      "display_error": 0,
+      "nfc_stage": 5,
+      "nfc_error": 0,
+      "packets": 128,
+      "polls": 2941,
+      "i2c_naks": 0
+    },
+    {
+      "wall_seconds": 20.3,
+      "ticks_ms": 184921,
+      "display_stage": 6,
+      "display_error": 0,
+      "nfc_stage": 5,
+      "nfc_error": 0,
+      "packets": 128,
+      "polls": 3041,
+      "i2c_naks": 0
+    },
+    {
+      "wall_seconds": 25.3,
+      "ticks_ms": 189908,
+      "display_stage": 6,
+      "display_error": 0,
+      "nfc_stage": 5,
+      "nfc_error": 0,
+      "packets": 128,
+      "polls": 3141,
+      "i2c_naks": 0
+    },
+    {
+      "wall_seconds": 30.3,
+      "ticks_ms": 194893,
+      "display_stage": 6,
+      "display_error": 0,
+      "nfc_stage": 5,
+      "nfc_error": 0,
+      "packets": 128,
+      "polls": 3240,
+      "i2c_naks": 0
+    },
+    {
+      "wall_seconds": 35.3,
+      "ticks_ms": 199880,
+      "display_stage": 6,
+      "display_error": 0,
+      "nfc_stage": 5,
+      "nfc_error": 0,
+      "packets": 128,
+      "polls": 3340,
+      "i2c_naks": 0
+    },
+    {
+      "wall_seconds": 40.3,
+      "ticks_ms": 204866,
+      "display_stage": 6,
+      "display_error": 0,
+      "nfc_stage": 5,
+      "nfc_error": 0,
+      "packets": 128,
+      "polls": 3440,
+      "i2c_naks": 0
+    },
+    {
+      "wall_seconds": 45.3,
+      "ticks_ms": 209852,
+      "display_stage": 6,
+      "display_error": 0,
+      "nfc_stage": 5,
+      "nfc_error": 0,
+      "packets": 128,
+      "polls": 3540,
+      "i2c_naks": 0
+    },
+    {
+      "wall_seconds": 50.3,
+      "ticks_ms": 214839,
+      "display_stage": 6,
+      "display_error": 0,
+      "nfc_stage": 5,
+      "nfc_error": 0,
+      "packets": 128,
+      "polls": 3639,
+      "i2c_naks": 0
+    },
+    {
+      "wall_seconds": 55.3,
+      "ticks_ms": 219825,
+      "display_stage": 6,
+      "display_error": 0,
+      "nfc_stage": 5,
+      "nfc_error": 0,
+      "packets": 128,
+      "polls": 3739,
+      "i2c_naks": 0
+    },
+    {
+      "wall_seconds": 60.3,
+      "ticks_ms": 224810,
+      "display_stage": 6,
+      "display_error": 0,
+      "nfc_stage": 5,
+      "nfc_error": 0,
+      "packets": 128,
+      "polls": 3839,
+      "i2c_naks": 0
+    },
+    {
+      "wall_seconds": 65.3,
+      "ticks_ms": 229795,
+      "display_stage": 6,
+      "display_error": 0,
+      "nfc_stage": 5,
+      "nfc_error": 0,
+      "packets": 128,
+      "polls": 3938,
+      "i2c_naks": 0
+    },
+    {
+      "wall_seconds": 70.3,
+      "ticks_ms": 234781,
+      "display_stage": 6,
+      "display_error": 0,
+      "nfc_stage": 5,
+      "nfc_error": 0,
+      "packets": 128,
+      "polls": 4038,
+      "i2c_naks": 0
+    },
+    {
+      "wall_seconds": 75.3,
+      "ticks_ms": 239767,
+      "display_stage": 6,
+      "display_error": 0,
+      "nfc_stage": 5,
+      "nfc_error": 0,
+      "packets": 128,
+      "polls": 4138,
+      "i2c_naks": 0
+    },
+    {
+      "wall_seconds": 80.3,
+      "ticks_ms": 244752,
+      "display_stage": 6,
+      "display_error": 0,
+      "nfc_stage": 5,
+      "nfc_error": 0,
+      "packets": 128,
+      "polls": 4238,
+      "i2c_naks": 0
+    },
+    {
+      "wall_seconds": 85.3,
+      "ticks_ms": 249737,
+      "display_stage": 6,
+      "display_error": 0,
+      "nfc_stage": 5,
+      "nfc_error": 0,
+      "packets": 128,
+      "polls": 4337,
+      "i2c_naks": 0
+    },
+    {
+      "wall_seconds": 90.4,
+      "ticks_ms": 254722,
+      "display_stage": 6,
+      "display_error": 0,
+      "nfc_stage": 5,
+      "nfc_error": 0,
+      "packets": 128,
+      "polls": 4437,
+      "i2c_naks": 0
+    },
+    {
+      "wall_seconds": 95.4,
+      "ticks_ms": 259708,
+      "display_stage": 6,
+      "display_error": 0,
+      "nfc_stage": 5,
+      "nfc_error": 0,
+      "packets": 128,
+      "polls": 4537,
+      "i2c_naks": 0
+    },
+    {
+      "wall_seconds": 100.4,
+      "ticks_ms": 264694,
+      "display_stage": 6,
+      "display_error": 0,
+      "nfc_stage": 5,
+      "nfc_error": 0,
+      "packets": 128,
+      "polls": 4636,
+      "i2c_naks": 0
+    },
+    {
+      "wall_seconds": 105.4,
+      "ticks_ms": 269681,
+      "display_stage": 6,
+      "display_error": 0,
+      "nfc_stage": 5,
+      "nfc_error": 0,
+      "packets": 128,
+      "polls": 4736,
+      "i2c_naks": 0
+    },
+    {
+      "wall_seconds": 110.4,
+      "ticks_ms": 274667,
+      "display_stage": 6,
+      "display_error": 0,
+      "nfc_stage": 5,
+      "nfc_error": 0,
+      "packets": 128,
+      "polls": 4836,
+      "i2c_naks": 0
+    },
+    {
+      "wall_seconds": 115.4,
+      "ticks_ms": 279653,
+      "display_stage": 6,
+      "display_error": 0,
+      "nfc_stage": 5,
+      "nfc_error": 0,
+      "packets": 128,
+      "polls": 4936,
+      "i2c_naks": 0
+    },
+    {
+      "wall_seconds": 120.4,
+      "ticks_ms": 284640,
+      "display_stage": 6,
+      "display_error": 0,
+      "nfc_stage": 5,
+      "nfc_error": 0,
+      "packets": 128,
+      "polls": 5035,
+      "i2c_naks": 0
+    }
+  ],
+  "passed": true,
+  "phone_rf_transfer_not_proven": true
+}
