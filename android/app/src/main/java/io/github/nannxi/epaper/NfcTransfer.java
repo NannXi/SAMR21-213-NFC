@@ -70,7 +70,7 @@ public final class NfcTransfer {
         NfcA nfc=NfcA.get(tag);
         if(nfc==null)throw new IOException("这不是支持的 NFC-A 价签");
         try {
-            log("App 0.1.2 / mailbox 90h..9Fh");log("Android "+android.os.Build.VERSION.RELEASE+" / "+android.os.Build.MANUFACTURER+" "+android.os.Build.MODEL);log("Tech="+Arrays.toString(tag.getTechList()));nfc.connect();nfc.setTimeout(1000);
+            log("App 0.1.3 / mailbox 90h..9Fh");log("Android "+android.os.Build.VERSION.RELEASE+" / "+android.os.Build.MANUFACTURER+" "+android.os.Build.MODEL);log("Tech="+Arrays.toString(tag.getTechList()));nfc.connect();nfc.setTimeout(1000);
             byte[] uid=tag.getId();
             if(uid.length!=7||uid[0]!=4)throw new IOException("不是支持的 NXP 价签，未写入");
             log("UID="+hex(uid));

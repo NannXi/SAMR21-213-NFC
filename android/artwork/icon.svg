@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 128 128" shape-rendering="crispEdges">
+<title>墨屏 · 像素墨水屏图标</title>
+<rect width="128" height="128" fill="#f4f5f1"/>
+<g id="mark">
+<path fill="#202e29" d="M30 32H98V36H102V40H106V88H102V92H98V96H30V92H26V88H22V40H26V36H30Z"/>
+<path fill="#ffffff" d="M32 40H96V44H98V84H96V88H32V84H30V44H32Z"/>
+<path fill="#d44943" d="M30 64H98V84H96V88H32V84H30Z"/>
+<path fill="#202e29" d="M38 46H66V50H38ZM38 54H54V58H38ZM78 46H90V58H78Z"/>
+<path fill="#ffffff" d="M38 72H58V76H38ZM38 80H50V84H38Z"/>
+<path fill="#ffffff" d="M78 70H82V74H86V70H90V74H94V78H90V82H86V86H82V82H78V78H74V74H78Z"/>
+</g></svg>
