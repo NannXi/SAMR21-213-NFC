@@ -10,7 +10,7 @@
 .\build.ps1 -JavaHome 'C:\Tools\jdk17' -AndroidSdk 'C:\Android\sdk' -BuildToolsVersion '35.0.0'
 ```
 
-输出 `../releases/epaper-nfc-v0.1.3-debug.apk`。默认开发签名密钥创建在忽略的 `android/build/android-debug.keystore`；可用 `-KeyStore` 指定已有开发密钥。密钥与 SDK 不上传 Git。不同密钥构建的 APK 需要卸载旧版后安装，或沿用原密钥。这里的密码 `android` 是标准开发测试配置，不用于正式生产发布。
+输出 `../releases/epaper-nfc-v0.1.4-debug.apk`。默认开发签名密钥创建在忽略的 `android/build/android-debug.keystore`；可用 `-KeyStore` 指定已有开发密钥。密钥与 SDK 不上传 Git。不同密钥构建的 APK 需要卸载旧版后安装，或沿用原密钥。这里的密码 `android` 是标准开发测试配置，不用于正式生产发布。
 
 用户已确认 v0.1.2 手机端到端上传成功。v0.1.3 更新界面、图标、抖动强度与上传常亮，继续兼容 v0.1.2 板端固件；新界面与常亮等待手机验收。方向通过已实测的控制器映射实现；照片裁切支持拖动、缩放和手动 90° 旋转。抖动支持无 / 4×4 Bayer / Floyd–Steinberg，输出始终只有黑白红实际像素。透明区域先叠到白底。
 
@@ -36,3 +36,11 @@ RF场存在时MCU只读会话寄存器；手机每读完邮箱后静默90ms，MC
 - 从等待连接、传图至屏幕刷新全程保持亮屏，成功、失败、取消和后台退出均清理；不修改系统休眠设置。
 - 原创黑白红像素SVG位于android/artwork/icon.svg，已转五档PNG和Adaptive Icon打入APK。
 - versionCode4，沿用同一开发签名，可覆盖安装；NFC时序和板端固件未改。构建与算法测试通过，新界面和常亮尚无手机实测。图标再生成：安装cairosvg与Cairo运行库后执行 python tools/render_icon.py。预生成资源已提交，正常APK构建无需Python。
+
+## v0.1.4（2026-10-21）
+
+- 删除首页图片编辑、调整画面贴近上传及预览标题，保留墨屏品牌。
+- 画面预览独立为固定圆角矩形窗，位于调整滚动区之外；滚动下方参数时预览持续可见。
+- 选择图片、顺时针旋转90°、图片信息与裁切缩放全部移入图像调整卡片。
+- 重绘顺时针旋转图标，使圆弧与箭头连接，方向与旋转操作一致。
+- 应用versionCode5，沿用签名；图像算法、NFC时序和v0.1.2固件不变。构建及核心测试结果见docs/android_build_validation.json；新布局仍待手机验收。

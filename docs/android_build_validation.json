@@ -1,9 +1,9 @@
 {
   "date": "2026-10-21",
-  "version": "0.1.3",
-  "version_code": 4,
+  "version": "0.1.4",
+  "version_code": 5,
   "application_label": "墨屏",
-  "apk_sha256": "fd99a36cdef506d9392a84b86270248f6f5bbb30d0e1cff1f67ab9d6062befca",
+  "apk_sha256": "b7cddf0c448169515f5a34b47203571f9801a6b088642ec52b2b9cb93513fb9d",
   "signature_schemes": [
     "v2",
     "v3"
@@ -23,7 +23,10 @@
   "ui_runtime_tested": false,
   "phone_connected_via_adb": false,
   "phone_upload_v0_1_2": "User confirmed success",
-  "phone_upload_v0_1_3": "Pending user test",
   "firmware_compatibility": "v0.1.2 unchanged",
-  "firmware_sha256": "820c3cc38be04efa9ddf91563e0750b07f23227f682ea5bbdace806cc2cad479"
+  "firmware_sha256": "820c3cc38be04efa9ddf91563e0750b07f23227f682ea5bbdace806cc2cad479",
+  "phone_upload_v0_1_4": "Pending user test",
+  "fixed_preview_layout_source_check": true,
+  "controls_in_adjustment_card_source_check": true,
+  "rotation_arrow_continuity_source_check": true
 }

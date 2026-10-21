@@ -6,7 +6,7 @@ LG Innotek ESL TAG2.13B 的 **Keil5 C 固件 + 原生 Android 图片编辑与 NF
 
 ## 下载与使用
 
-在 [Releases](https://github.com/NannXi/SAMR21-213-NFC/releases) 下载 `epaper-nfc-v0.1.3-debug.apk`。Android 8.0 及以上，手机需 NFC-A；当前 APK 使用开发测试签名。不开启联网，不申请照片库或存储权限，通过系统文件选择器选图。
+在 [Releases](https://github.com/NannXi/SAMR21-213-NFC/releases) 下载 `epaper-nfc-v0.1.4-debug.apk`。Android 8.0 及以上，手机需 NFC-A；当前 APK 使用开发测试签名。不开启联网，不申请照片库或存储权限，通过系统文件选择器选图。
 
 1. 主板保持原来已验证的 **3.3 V 供电**，烧录配套固件，等待上电示例画面刷新完成（约 15 秒）。
 2. 手机安装 APK，打开 NFC，选择图片。

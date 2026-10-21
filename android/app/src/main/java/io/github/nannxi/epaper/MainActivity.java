@@ -215,14 +215,9 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
             View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
     LinearLayout root = column();
     root.setBackgroundColor(BG);
-    ScrollView scroll = new ScrollView(this);
-    scroll.setFillViewport(true);
-    scroll.setClipToPadding(false);
-    scroll.setVerticalScrollBarEnabled(false);
-    LinearLayout page = column();
-    page.setPadding(dp(20), dp(16), dp(20), dp(4));
-    scroll.addView(page);
-    root.addView(scroll, new LinearLayout.LayoutParams(-1, 0, 1));
+    LinearLayout header = column();
+    header.setPadding(dp(20), dp(12), dp(20), 0);
+    root.addView(header, new LinearLayout.LayoutParams(-1, -2));
     LinearLayout brand = row();
     ImageView mark = new ImageView(this);
     mark.setImageDrawable(getApplicationInfo().loadIcon(getPackageManager()));
@@ -242,52 +237,26 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
                 .setMessage(
                     "图片编辑与 NFC 上传\n\n"
                         + "2.13 英寸 · 212 × 104 · 黑白红\n"
-                        + "版本 0.1.3\n\n"
+                        + "版本 0.1.4\n\n"
                         + "上传期间保持主板供电，手机靠近背面的 NFC 线圈。")
                 .setPositiveButton("知道了", null)
                 .show());
     brand.addView(about);
-    page.addView(brand);
-    gap(page, 25);
-    TextView title = text("图片编辑", 29, INK);
-    bold(title);
-    page.addView(title);
-    TextView intro = text("调整画面，贴近上传。", 14, MUTED);
-    intro.setPadding(0, dp(6), 0, dp(21));
-    page.addView(intro);
-    previewCard = card(page);
-    LinearLayout previewHeading = row();
-    TextView previewTitle = text("画面预览", 16, INK);
-    bold(previewTitle);
-    previewHeading.addView(previewTitle, new LinearLayout.LayoutParams(0, -2, 1));
-    previewHeading.addView(chip("212 × 104"));
-    previewCard.addView(previewHeading);
-    gap(previewCard, 14);
+    header.addView(brand);
+    gap(header, 14);
+    previewCard = card(header);
+    previewCard.setPadding(dp(8), dp(8), dp(8), dp(8));
     canvas = new CanvasView();
     canvas.setContentDescription("墨水屏预览，可拖动调整图片裁切");
     previewCard.addView(canvas, new LinearLayout.LayoutParams(-1, -2));
-    gap(previewCard, 10);
-    LinearLayout caption = row();
-    sourceName = text("示例画面", 12, MUTED);
-    sourceName.setSingleLine(true);
-    sourceName.setEllipsize(android.text.TextUtils.TruncateAt.END);
-    caption.addView(sourceName, new LinearLayout.LayoutParams(0, -2, 1));
-    TextView palette = text("黑 / 白 / 红", 11, MUTED);
-    caption.addView(palette);
-    previewCard.addView(caption);
-    gap(previewCard, 17);
-    LinearLayout actions = row();
-    Button choose = button("选择图片", 1, false), rotate = button("旋转", 2, false);
-    actions.addView(choose, new LinearLayout.LayoutParams(0, dp(46), 1));
-    LinearLayout.LayoutParams rp = new LinearLayout.LayoutParams(0, dp(46), 1);
-    rp.leftMargin = dp(10);
-    actions.addView(rotate, rp);
-    choose.setOnClickListener(v -> choose());
-    rotate.setOnClickListener(v -> rotate());
-    previewCard.addView(actions);
-    gap(previewCard, 18);
-    scale = slider(previewCard, "裁切缩放", 200, 0, 0);
-    previewCard.addView(text("拖动预览调整位置", 11, MUTED));
+    ScrollView scroll = new ScrollView(this);
+    scroll.setFillViewport(true);
+    scroll.setClipToPadding(false);
+    scroll.setVerticalScrollBarEnabled(false);
+    LinearLayout page = column();
+    page.setPadding(dp(20), 0, dp(20), dp(4));
+    scroll.addView(page);
+    root.addView(scroll, new LinearLayout.LayoutParams(-1, 0, 1));
     adjustCard = card(page);
     LinearLayout adjustHeading = row();
     TextView adjustment = text("图像调整", 17, INK);
@@ -302,6 +271,28 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
     reset.setOnClickListener(v -> resetAdjustments());
     adjustCard.addView(adjustHeading);
     gap(adjustCard, 16);
+    LinearLayout actions = row();
+    Button choose = button("选择图片", 1, false), rotate = button("旋转 90°", 2, false);
+    actions.addView(choose, new LinearLayout.LayoutParams(0, dp(46), 1));
+    LinearLayout.LayoutParams rp = new LinearLayout.LayoutParams(0, dp(46), 1);
+    rp.leftMargin = dp(10);
+    actions.addView(rotate, rp);
+    choose.setOnClickListener(v -> choose());
+    rotate.setOnClickListener(v -> rotate());
+    rotate.setContentDescription("顺时针旋转图片 90 度");
+    adjustCard.addView(actions);
+    gap(adjustCard, 12);
+    LinearLayout caption = row();
+    sourceName = text("示例画面", 12, MUTED);
+    sourceName.setSingleLine(true);
+    sourceName.setEllipsize(android.text.TextUtils.TruncateAt.END);
+    caption.addView(sourceName, new LinearLayout.LayoutParams(0, -2, 1));
+    caption.addView(text("212 × 104", 11, MUTED));
+    adjustCard.addView(caption);
+    gap(adjustCard, 20);
+    scale = slider(adjustCard, "裁切缩放", 200, 0, 0);
+    adjustCard.addView(text("拖动预览调整位置", 11, MUTED));
+    gap(adjustCard, 22);
     adjustCard.addView(text("输出颜色", 13, MUTED));
     gap(adjustCard, 9);
     colorOptions = segments(adjustCard, new String[] {"黑白红", "黑白"}, true);
@@ -884,9 +875,12 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
         path.lineTo(21, 16);
         c.drawPath(path, p);
       } else if (kind == 2) {
-        c.drawArc(4, 5, 20, 21, -65, 285, false, p);
-        c.drawLine(15, 2, 15, 7, p);
-        c.drawLine(15, 7, 20, 7, p);
+        c.drawArc(3, 4, 19, 20, 90, 270, false, p);
+        Path arrow = new Path();
+        arrow.moveTo(15, 8);
+        arrow.lineTo(19, 12);
+        arrow.lineTo(23, 8);
+        c.drawPath(arrow, p);
       } else {
         c.drawRoundRect(8, 3, 16, 21, 2, 2, p);
         c.drawLine(11, 18, 13, 18, p);
