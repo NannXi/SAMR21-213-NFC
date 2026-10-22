@@ -1,46 +1,52 @@
-# Android 图片编辑 / NFC 上传
+# Android 应用：墨屏
 
-原生 Java，最小 Android 8/API26，目标 API35。无第三方库；通过系统图片选择器获取单张图片，应用不需要联网或存储权限。开启 NFC ReaderMode 只在用户点击上传后进行，跳过 NDEF 解析以免把 SRAM 邮箱当 NDEF。
+原生 Java，Android 8/API26 起，目标 API35，无第三方运行库。当前 v0.1.4/versionCode 5，配套板端 v0.1.2。用户已确认 v0.1.2 手机上传成功；新界面和常亮待手机验收。
 
-## Windows 构建
+## 构建
 
-需要 JDK17、Android SDK Platform35 和 Build Tools35。不需要安装 Android Studio 或 Gradle，`build.ps1` 调用官方 javac / d8 / aapt2 / zipalign / apksigner。
+需要 JDK17、SDK Platform35、Build Tools35。在本目录运行：
 
 ```powershell
 .\build.ps1 -JavaHome 'C:\Tools\jdk17' -AndroidSdk 'C:\Android\sdk' -BuildToolsVersion '35.0.0'
 ```
 
-输出 `../releases/epaper-nfc-v0.1.4-debug.apk`。默认开发签名密钥创建在忽略的 `android/build/android-debug.keystore`；可用 `-KeyStore` 指定已有开发密钥。密钥与 SDK 不上传 Git。不同密钥构建的 APK 需要卸载旧版后安装，或沿用原密钥。这里的密码 `android` 是标准开发测试配置，不用于正式生产发布。
+无需 Android Studio 或 Gradle；脚本调用 javac、d8、aapt2、zipalign、apksigner，输出 `../releases/epaper-nfc-v0.1.4-debug.apk`，版本名自动读取 Manifest。
 
-用户已确认 v0.1.2 手机端到端上传成功。v0.1.3 更新界面、图标、抖动强度与上传常亮，继续兼容 v0.1.2 板端固件；新界面与常亮等待手机验收。方向通过已实测的控制器映射实现；照片裁切支持拖动、缩放和手动 90° 旋转。抖动支持无 / 4×4 Bayer / Floyd–Steinberg，输出始终只有黑白红实际像素。透明区域先叠到白底。
+默认在忽略的 `build/android-debug.keystore` 生成开发签名；可通过 `-KeyStore` 指定自己的已有密钥。只有同证书才能覆盖安装已发布 APK。SDK/JDK/私钥不入库，`android` 是标准调试口令，非生产签名配置。发布文件身份见[版本说明](../docs/RELEASES.md)。
 
-上传前验证固件 BWR1 签名、212×104、5512 字节、UID 与 NFC Tag 一致。不是通用 NDEF 写入器，不匹配的标签不写。传输、刷新均显示不同阶段，中断后重新上传整图；已提交刷新无法用取消按钮撤回。
+## 编辑与上传
 
-0.1.1 的失败弹窗支持复制诊断；不会上传日志到网络。若复制后要公开，请留意日志中含标签 UID。
+- 固定顶部圆角预览；调整区可滚动，底部固定上传按钮。
+- 系统文件选择器、顺时针90°旋转、100–300%裁切缩放与预览拖动。
+- 亮度、对比度、黑白红/黑白、关闭/有序/扩散及0–100%抖动强度。
+- 有序抖动缩放阈值偏移；扩散抖动缩放传播误差。0%等于不抖动，100%保持原算法输出。
+- 透明区域叠白底后转换，预览按实际三色像素绘制。
+- ReaderMode 仅点击上传后启用，跳过NDEF解析，识别签名/尺寸/UID/布局修订才写。
+- 等待、传输、刷新期间 FLAG_KEEP_SCREEN_ON；成功/失败/取消/后台清理。编辑控件在上传期间禁用。
+- 错误弹窗提供查看/复制本地诊断，不自动上传日志。
 
-## v0.1.2 邮箱迁移（2026-10-21）
+权限只有 NFC；不需要联网、存储、照片库、root、Shizuku 或 WAKE_LOCK。取消不能撤回已提交的物理刷新，退出后台会停止当前传输。
 
-手机日志已读取完整 EPA1、UID 和尺寸，但第一条 A2 04 写命令失败。旧邮箱选址有误：静态锁 F0 FF，RF 04h..0Fh 只读；动态锁 FF 00 00，RF 10h..8Fh 也被锁定。动态锁在 I2C block38h 字节8..10，不在块首。
+## 源码
 
-新邮箱 RF 90h..9Fh，I2C镜像块24h，目标动态锁byte1 bit0清零。保持全部锁位、用户EEPROM和持久配置不变。Android先只读锁位、校验UID/签名/邮箱版本再写。固件和APK须同时升级至0.1.2。
+| 文件 | 责任 |
+|---|---|
+| `MainActivity.java` | 界面、图片输入、裁切预览、状态与生命周期 |
+| `ImageProcessor.java` | 色彩量化、抖动与双平面打包 |
+| `Wire.java` | 帧、CRC与小端读写 |
+| `NfcTransfer.java` | NfcA命令、识别、重试、进度与诊断 |
 
-RF场存在时MCU只读会话寄存器；手机每读完邮箱后静默90ms，MCU在最后块读取事件20ms后访问SRAM。LAST_NDEF_BLOCK=27h，手机presence-check间隔1秒。响应字节39=90h，40=布局修订2。写完一帧后额外READ9Ch发出交接事件。无RF场时50ms轮询，镜像配置每500ms检查恢复。
+## 图标
 
-板端SWD经真实I2C到SRAM整图5512字节、重复包、CRC、刷新和DONE通过。用户随后确认手机0.1.2端到端上传成功。0.1.1的3004失败仍可能涉及仲裁，不能仅凭异常判定手机移开。
-## v0.1.3 墨屏（2026-10-21）
+[SVG源文件](artwork/icon.svg)是黑白红像素墨水屏，附[PNG预览](artwork/icon-preview.png)。`app/src/main/res` 已提交五档PNG与Adaptive Icon，正常构建不需要Python。
 
-用户确认v0.1.2手机上传成功。本版只升级Android应用，继续使用v0.1.2固件，无需重新烧录。
+重新生成图标（本目录）：
 
-- 应用名改为墨屏；浅色卡片、预览与图像调整分组、分段选择、底部固定上传按钮。
-- 抖动强度0–100%：有序调整阈值幅度，扩散调整误差传播。0%等于无抖动，100%保持旧版结果。关闭抖动时禁用滑条。
-- 从等待连接、传图至屏幕刷新全程保持亮屏，成功、失败、取消和后台退出均清理；不修改系统休眠设置。
-- 原创黑白红像素SVG位于android/artwork/icon.svg，已转五档PNG和Adaptive Icon打入APK。
-- versionCode4，沿用同一开发签名，可覆盖安装；NFC时序和板端固件未改。构建与算法测试通过，新界面和常亮尚无手机实测。图标再生成：安装cairosvg与Cairo运行库后执行 python tools/render_icon.py。预生成资源已提交，正常APK构建无需Python。
+```powershell
+python -m pip install cairosvg
+python tools/render_icon.py
+```
 
-## v0.1.4（2026-10-21）
+CairoSVG 需要系统可用 Cairo 运行库。修改图标后检查不同桌面遮罩裁切，不把 PNG 预览当成 Android 运行截图。
 
-- 删除首页图片编辑、调整画面贴近上传及预览标题，保留墨屏品牌。
-- 画面预览独立为固定圆角矩形窗，位于调整滚动区之外；滚动下方参数时预览持续可见。
-- 选择图片、顺时针旋转90°、图片信息与裁切缩放全部移入图像调整卡片。
-- 重绘顺时针旋转图标，使圆弧与箭头连接，方向与旋转操作一致。
-- 应用versionCode5，沿用签名；图像算法、NFC时序和v0.1.2固件不变。构建及核心测试结果见docs/android_build_validation.json；新布局仍待手机验收。
+测试入口见[测试说明](../tests/README.md)，UI/实机边界见[验证状态](../docs/HARDWARE_AND_VALIDATION.md)。

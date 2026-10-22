@@ -1,0 +1,46 @@
+{
+  "android/app/src/main/res/mipmap-hdpi/ic_launcher.png": {
+    "bytes": 398,
+    "sha256": "aaffc056396ef763b88cc26b860920daaeae3f70b7264facbe1b224b88b927a0"
+  },
+  "android/app/src/main/res/mipmap-mdpi/ic_launcher.png": {
+    "bytes": 332,
+    "sha256": "4c362cd4b7c40df74d8ce137d0ab164cf6931cdad12623dacc698dfa70d83b99"
+  },
+  "android/app/src/main/res/mipmap-xhdpi/ic_launcher.png": {
+    "bytes": 502,
+    "sha256": "0069a0914c825b013369081dda7d802268283bed633cd5279de8359230bc7346"
+  },
+  "android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png": {
+    "bytes": 675,
+    "sha256": "f37dbd28ae693876b8fa1edad65ad058792877f8955f265b428c1ca8a73da83f"
+  },
+  "android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png": {
+    "bytes": 828,
+    "sha256": "950cca070c6eb00008087c8b704e92ff9801c04a0621196b42e019fc88080f5c"
+  },
+  "android/artwork/icon-preview.png": {
+    "bytes": 2172,
+    "sha256": "c3cea6ba3388b7ad82763b9c870b8673a7d8a28948c504557d2857528a715c0f"
+  },
+  "docs/nfc_eeprom_before.bin": {
+    "bytes": 896,
+    "sha256": "aa2fadb624c42d9080efaa951cda56df7e70629cf3d91661896b21ebaacf4b55"
+  },
+  "docs/nfc_sram_before.bin": {
+    "bytes": 64,
+    "sha256": "f5a5fd42d16a20302798ef6ed309979b43003d2320d9f0e8ea9831a92759fb4b"
+  },
+  "firmware/Objects/epd_white.axf": {
+    "bytes": 78352,
+    "sha256": "048daa8343c5fb3392a8d60745ea8f012ee8bd0f25895a7818a5a3cbcaf24c36"
+  },
+  "firmware/Objects/epd_white.bin": {
+    "bytes": 5980,
+    "sha256": "820c3cc38be04efa9ddf91563e0750b07f23227f682ea5bbdace806cc2cad479"
+  },
+  "firmware/Tools/original_flash_256KiB_read1.bin": {
+    "bytes": 262144,
+    "sha256": "023efc81fb12f6bbfec844374120924c8c1e8597ea3e2884af3306df3d8639c8"
+  }
+}

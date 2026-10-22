@@ -1,0 +1,31 @@
+{
+  "date": "2026-10-22",
+  "scope": "Documentation, repository checks and host build/launcher tooling",
+  "source_before_maintenance": "1976c6661f90c4e309c0d17ba5931137175d77ca",
+  "keil_rebuild": {
+    "compiler": "ARMCC 5.06 u5 build 528",
+    "isolated": true,
+    "result": "PASS",
+    "bin_matches_existing": true,
+    "bin_bytes": 5980,
+    "sha256": "820c3cc38be04efa9ddf91563e0750b07f23227f682ea5bbdace806cc2cad479"
+  },
+  "hardware_connected_or_flashed": false,
+  "historical_evidence_and_original_materials_modified": false,
+  "existing_release_assets_replaced": false,
+  "java_core_tests": "PASS",
+  "android_rebuild": {
+    "result": "PASS",
+    "version": "0.1.4",
+    "version_code": 5,
+    "signature_schemes": [
+      "v2",
+      "v3"
+    ],
+    "isolated": true,
+    "published_apk_sha256": "b7cddf0c448169515f5a34b47203571f9801a6b088642ec52b2b9cb93513fb9d",
+    "note": "Rebuild verifies build script; published APK remains unchanged, timestamps/signing can alter rebuilt bytes"
+  },
+  "ui_runtime_retested": false,
+  "phone_upload_retested": false
+}

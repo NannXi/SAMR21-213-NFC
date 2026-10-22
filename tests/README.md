@@ -1,27 +1,41 @@
-# 测试
+# 校验与测试
 
-## 图像 / 协议纯 Java 核心
+## 离线仓库校验
 
-用 JDK17 编译 `ImageProcessor.java`、`Wire.java` 与 `CoreTest.java` 到临时目录，再运行 `CoreTest`。验证纯白、黑红极性、四角和中间坐标、三色量化、抖动与标准 CRC32 向量。
+仓库根目录：
+
+```powershell
+python tools/check_repository.py
+```
+
+只使用 Python 标准库和 Git，检查受版本管理的 Markdown/HTML 本地链接、JSON、Keil 输入文件、二进制清单和应用版本。不会联系硬件，也不会检查外网链接。
+
+## Java 核心
+
+JDK17，在仓库根目录：
+
+```powershell
+.\tests\run-core.ps1 -JavaHome 'C:\Tools\jdk17'
+```
+
+覆盖白/黑/红极性、四角与中间坐标、三色量化、抖动强度0/25/50/75/100、0%关闭、100%兼容、边界限制、标准CRC32向量与EPD1帧。产物在忽略的 `android/build/core-tests`。
+
+GitHub Actions执行离线检查与这组Java测试。不使用签名私钥，不编译Keil，不连接实物，不把测试通过当成UI或RF实机验证。
 
 ## 实板协议
 
-保持已烧录匹配 AXF 的板卡连接，使用安装了 `firmware/Tools/requirements.txt` 的 Python：
+需已连接并运行匹配固件/AXF的板卡，使用安装了 `firmware/Tools/requirements.txt` 的Python：
 
 ```powershell
 python tests/hardware_mailbox.py
 ```
 
-测试会通过 SWD 调试邮箱发送当前帧缓冲内容，经真实 NFC I²C SRAM 接收并触发一次实际屏幕刷新；不是只读测试。不会写 NFC EEPROM，最后会逐块回读比较 896 字节。会覆盖 `docs/hardware_protocol_validation.json`。约 1–2 分钟。
+脚本通过SWD请求MCU，把帧缓冲经真实I²C写入NFC SRAM，再读回处理整图、重复包、错误偏移、CRC、COMMIT、刷新和DONE。会改变实物画面，约1–2分钟，覆盖 `docs/hardware_protocol_validation.json`；不要与手机上传同时执行。
 
-这条路径**没有经过手机 RF 接口**。COMMIT 时屏幕驱动阻塞，主循环调试邮箱不能同时处理，因此 ACK 发布检查由 RAM 标志辅助，DONE 在屏幕完成后用物理 SRAM 读回。不要把脚本通过解释成 Android/手机 NFC 全链路成功。
+不会写NFC EEPROM，结束时逐块核对896字节。此路径没有手机RF。屏幕刷新阻塞主循环，COMMIT ACK发布以RAM标志辅助，DONE在结束后读物理SRAM。报告反映测试脚本的实际覆盖范围。
 
-## v0.1.2 邮箱迁移（2026-10-21）
+## 手机验收
 
-手机日志已读取完整 EPA1、UID 和尺寸，但第一条 A2 04 写命令失败。旧邮箱选址有误：静态锁 F0 FF，RF 04h..0Fh 只读；动态锁 FF 00 00，RF 10h..8Fh 也被锁定。动态锁在 I2C block38h 字节8..10，不在块首。
+v0.1.2已收到用户上传成功反馈。v0.1.4固定预览、旋转图标、常亮以及多机/移场/掉电条件仍需实机数据，见[验收步骤](../docs/HARDWARE_AND_VALIDATION.md)。
 
-新邮箱 RF 90h..9Fh，I2C镜像块24h，目标动态锁byte1 bit0清零。保持全部锁位、用户EEPROM和持久配置不变。Android先只读锁位、校验UID/签名/邮箱版本再写。固件和APK须同时升级至0.1.2。
-
-RF场存在时MCU只读会话寄存器；手机每读完邮箱后静默90ms，MCU在最后块读取事件20ms后访问SRAM。LAST_NDEF_BLOCK=27h，手机presence-check间隔1秒。响应字节39=90h，40=布局修订2。写完一帧后额外READ9Ch发出交接事件。无RF场时50ms轮询，镜像配置每500ms检查恢复。
-
-板端SWD经真实I2C到SRAM整图5512字节、重复包、CRC、刷新和DONE通过。手机0.1.2端到端仍待验证；不能把电脑测试当成手机上传成功。0.1.1的3004失败仍可能涉及仲裁，不能仅凭异常判定手机移开。v0.1.3新增两种抖动算法的强度0/25/50/75/100调色板、0%关闭、100%兼容、渐变差异和范围夹取测试。
+当前校验结果与实验报告分开存放，原始Flash/EEPROM备份和历史报告不因CI重新生成。

@@ -13,7 +13,7 @@ python -m venv .venv
 
 保持已验证的 ST-Link 3.3 V/GND/PA31 SWDIO/PA30 SWCLK 接法。默认探针序列号沿用实物，可通过环境变量 `EPD_PROBE_SERIAL` 设置。工具先备份、双读一致后编程，最后写复位向量，再做 256 KiB 全量回读与辅助区校验。不要使用整片擦除或自动解锁。
 
-`flash.ps1 -Action status` 读显示状态；`-Action recover` 恢复随附原板镜像。原厂镜像和 NFC EEPROM 备份包含本板标识，仅针对这块板，勿盲目用于其他硬件。每次运行的原始证据保存在未进 Git 的 `Runs/`。
+`flash.ps1 -Action status` 读显示状态；`-Action recover` 恢复随附原板镜像。原厂镜像和 NFC EEPROM 备份包含本板标识，仅针对这块板，勿盲目用于其他硬件。主机解释器优先使用工程内.venv，也可通过 `-PythonExe` 指定。NFC EEPROM备份位于 [docs/nfc_eeprom_before.bin](../docs/nfc_eeprom_before.bin)，原厂Flash恢复不会恢复独立NFC EEPROM。每次运行的原始证据保存在未进 Git 的 `Runs/`。
 
 - `App/protocol.c`：包解析、完整性、双缓冲提交。
 - `Drivers/nfc.c`：SERCOM1 I²C 及 SRAM/会话寄存器，I²C 写函数限制在 SRAM，不提供 EEPROM 写操作。

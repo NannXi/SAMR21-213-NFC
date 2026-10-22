@@ -18,3 +18,7 @@ releases/*.idsig
 releases/*.bin
 releases/*.hex
 releases/SHA256SUMS.txt
+
+# Release assets are generated copies of tracked sources.
+releases/icon.svg
+releases/icon-preview.png

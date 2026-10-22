@@ -1,65 +1,51 @@
-# SAMR21 2.13 NFC e-Paper
+# 墨屏 · SAMR21 NFC e-Paper
 
-LG Innotek ESL TAG2.13B 的 **Keil5 C 固件 + 原生 Android 图片编辑与 NFC 上传应用**。
+LG Innotek ESL TAG2.13B 的 **Keil5 C/ASM 固件 + 原生 Android 图片编辑与 NFC 上传应用**。在横向 212×104 画布上选图、裁切、调色，再贴近价签上传。
 
-> **v0.1.3：墨屏界面更新。** 用户已确认v0.1.2手机上传成功。此版升级手机应用，继续兼容已烧录的v0.1.2固件，无需重新烧录。
+<img src="android/artwork/icon-preview.png" alt="墨屏黑白红像素图标" width="112">
 
-## 下载与使用
+**当前组合：Android v0.1.4 + 板端固件 v0.1.2。** 用户已确认 v0.1.2 手机上传成功；v0.1.3/v0.1.4 的新界面、固定预览与常亮仍待手机验收。
 
-在 [Releases](https://github.com/NannXi/SAMR21-213-NFC/releases) 下载 `epaper-nfc-v0.1.4-debug.apk`。Android 8.0 及以上，手机需 NFC-A；当前 APK 使用开发测试签名。不开启联网，不申请照片库或存储权限，通过系统文件选择器选图。
+[下载 APK](https://github.com/NannXi/SAMR21-213-NFC/releases/download/v0.1.4/epaper-nfc-v0.1.4-debug.apk) · [下载板端 v0.1.2](https://github.com/NannXi/SAMR21-213-NFC/releases/tag/v0.1.2) · [版本与校验](docs/RELEASES.md) · [快速开始](docs/GETTING_STARTED.md)
 
-1. 主板保持原来已验证的 **3.3 V 供电**，烧录配套固件，等待上电示例画面刷新完成（约 15 秒）。
-2. 手机安装 APK，打开 NFC，选择图片。
-3. 在 **212×104** 横向画布上拖动裁切、缩放或旋转；调整亮度、对比度、黑白红 / 黑白模式与抖动（关闭、Bayer、Floyd–Steinberg）。
-4. 点“上传到墨水屏”，应用提示靠近 NFC。识别固件签名、尺寸和 UID 后，显示“请勿移动手机”。
-5. 逐块确认后显示进度；完整 CRC32 通过才提交刷新。等待刷新完成确认后，才能移开手机。
+## 使用流程
 
-镜像需要主板供电。本版尚未实现 NFC 单独供能刷新、低功耗、掉电保存图片或断点续传。传输中断后重传整图。**不要在传输中切断主板电源**：当前方案把 SRAM 映射到 RF 用户页，失去 VCC 后该地址会回到 EEPROM，继续发送可能影响原 NDEF；现场 EEPROM 已备份，RF 供电跌落恢复尚未验证。
+1. 给主板稳定供电，首次烧录板端 v0.1.2，等上电示例刷新结束（本板约 15 秒）。已经运行此固件时，只需升级 APK。
+2. 手机安装应用并打开 NFC。Android 8.0/API26 以上，需要 NFC-A；不需要 root 或 Shizuku。
+3. 在固定的圆角预览中看效果；在“图像调整”里选图、顺时针旋转 90°、缩放并拖动裁切。
+4. 调整亮度、对比度、黑白红/黑白、关闭/有序/扩散抖动，以及 0–100% 抖动强度。
+5. 点击“上传到墨水屏”，按提示靠近线圈。识别后保持位置，等待传输和刷新完成，再移开手机。
 
-应用预览只包含黑白红实际像素。亮度和对比度是图片处理参数，不是屏幕电压或物理对比度设置；前期实物偏淡现象仍存在。
+等待连接、传图、刷新期间应用保持亮屏，完成、取消、失败或进入后台后释放。应用只申请 NFC 权限；系统文件选择器授予单张图片访问，不申请联网、照片库或存储权限。
 
-## 工程入口
+预览是三色实际像素，不能代表实物反射对比度。图片亮度/对比度不会调节屏幕电压；本板物理偏淡问题仍存在。
 
-| 目录 | 内容 |
+## 仓库导航
+
+| 入口 | 内容 |
 |---|---|
-| [firmware](firmware/README.md) | ARMCC5 C/ASM、Keil `.uvprojx`、NFC 驱动、协议、原屏幕驱动及 SWD 下载恢复工具 |
-| [android](android/README.md) | 无第三方依赖的 Java Android 应用、可复现的 SDK 工具链构建脚本 |
-| [协议说明](docs/PROTOCOL.md) | SRAM、64 字节帧、CRC、状态机、双平面图像坐标 |
-| [硬件与验证](docs/HARDWARE_AND_VALIDATION.md) | 接线、实测证据、供电边界和未确认事项 |
-| [测试](tests/README.md) | 图像/协议核心测试，实板 SWD→I²C 邮箱测试 |
+| [快速开始](docs/GETTING_STARTED.md) | 接线、首次烧录、安装与传图 |
+| [版本与发布包](docs/RELEASES.md) | APK/固件兼容、签名与 SHA-256 |
+| [故障排查](docs/TROUBLESHOOTING.md) | 未识别、TagLost、transceive failed、刷新和诊断 |
+| [Android 工程](android/README.md) | JDK/SDK 命令行构建、界面、图标生成 |
+| [Keil 固件](firmware/README.md) | 构建、SWD 烧录、状态与原厂恢复 |
+| [架构](docs/ARCHITECTURE.md) / [协议](docs/PROTOCOL.md) | 图片处理、RF/SRAM 交接、双平面和 64 字节帧 |
+| [硬件与验证](docs/HARDWARE_AND_VALIDATION.md) | 证据文件、手机反馈与未验证事项 |
+| [测试](tests/README.md) | Java 核心测试、离线仓库检查、实板测试边界 |
+| [更新记录](docs/CHANGELOG.md) | 从 v0.1.0 到 v0.1.4 的修订 |
+| [贡献说明](CONTRIBUTING.md) / [来源说明](NOTICE.md) | 复核流程、反馈、许可证边界 |
 
-原始照片、完整硬件介绍、原厂分析和最初显示工程继续保存在 [SAMR21-213-EPaper](https://github.com/NannXi/SAMR21-213-EPaper)。本仓库独立维护 NFC 固件和手机软件，不改写旧项目。
+原始照片、完整主板资源、原厂固件分析与最初显示工程位于 [SAMR21-213-EPaper](https://github.com/NannXi/SAMR21-213-EPaper)。两个工程各自保留匹配的 AXF 和下载工具，避免交叉使用 RAM 地址。
 
-## 当前验证状态
+## 当前边界
 
-- ARM Compiler 5 编译、实机烧录、256 KiB Flash 全量回读、未写区及辅助区一致。
-- NFC I²C 地址 `0x55`，SRAM `0xF8..0xFB` 64 字节读写、会话寄存器镜像配置实测。
-- 整图 5512 字节传输、重复分块、错误偏移、包 CRC 拒收、提交后刷新与 DONE 确认实测；见验证 JSON。
-- Android 核心 Java 单测通过，APK 编译并通过 v2/v3 签名验证；0.1.1 与前版使用同一开发签名，可覆盖安装。
-- 用户已确认v0.1.2手机端到端上传成功；v0.1.3新界面和常亮待实机验收。手机离场、电压跌落和多机兼容仍需扩展验证。
-- NFC 芯片具体型号尚未确定，行为与 NXP NTAG I²C 兼容；不能仅靠寄存器布局断言为某个 Plus 型号。
+| 已确认 | 尚待验证或实现 |
+|---|---|
+| 用户反馈 v0.1.2 手机端到端上传成功 | v0.1.4 布局与常亮实机验收、多机兼容、吞吐和移场恢复 |
+| 实板 SRAM 整图 5512 字节、重复包、偏移/CRC 拒收、刷新与 DONE | VCC 跌落时 RF 镜像恢复、稳定性与续航测量 |
+| 完整 Flash 回读、未写区/辅助区、NFC EEPROM 比对 | NFC 精确芯片料号、屏幕驱动 IC |
+| Android 构建、v2/v3 签名、核心算法测试 | NFC 单独供能刷新、整机低功耗、掉电保存、断点续传 |
 
-日期：2026-10-21。
+本方案依赖主板 VCC。传输时保持稳定供电：掉电后 SRAM 镜像地址可能回到 EEPROM，继续 RF 写有影响原 NDEF 的风险。尚未发布自动恢复 EEPROM 或更改锁位的功能，详见[硬件与验证](docs/HARDWARE_AND_VALIDATION.md)。
 
-## v0.1.1 故障排查
-
-0.1.0 的 GPIO 软件 I²C 长时间轮询出现 HardFault，且手机报告握手未识别、TagLost / transceive failed。0.1.1 改为原板 SERCOM1 硬件 I²C、减少轮询并留 RF 空闲时隙，增加镜像恢复与初始化重试；应用等待握手最多 6 秒。失败弹窗可点“复制诊断”，包含手机型号、UID、READ 原始数据和失败命令，无需 root/Shizuku。收到 transceive failed 不能单凭文字认定手机移开。
-
-## v0.1.2 邮箱迁移（2026-10-21）
-
-手机日志已读取完整 EPA1、UID 和尺寸，但第一条 A2 04 写命令失败。旧邮箱选址有误：静态锁 F0 FF，RF 04h..0Fh 只读；动态锁 FF 00 00，RF 10h..8Fh 也被锁定。动态锁在 I2C block38h 字节8..10，不在块首。
-
-新邮箱 RF 90h..9Fh，I2C镜像块24h，目标动态锁byte1 bit0清零。保持全部锁位、用户EEPROM和持久配置不变。Android先只读锁位、校验UID/签名/邮箱版本再写。固件和APK须同时升级至0.1.2。
-
-RF场存在时MCU只读会话寄存器；手机每读完邮箱后静默90ms，MCU在最后块读取事件20ms后访问SRAM。LAST_NDEF_BLOCK=27h，手机presence-check间隔1秒。响应字节39=90h，40=布局修订2。写完一帧后额外READ9Ch发出交接事件。无RF场时50ms轮询，镜像配置每500ms检查恢复。
-
-板端SWD经真实I2C到SRAM整图5512字节、重复包、CRC、刷新和DONE通过。手机0.1.2端到端仍待验证；不能把电脑测试当成手机上传成功。0.1.1的3004失败仍可能涉及仲裁，不能仅凭异常判定手机移开。
-## v0.1.3 墨屏（2026-10-21）
-
-用户确认v0.1.2手机上传成功。本版只升级Android应用，继续使用v0.1.2固件，无需重新烧录。
-
-- 应用名改为墨屏；浅色卡片、预览与图像调整分组、分段选择、底部固定上传按钮。
-- 抖动强度0–100%：有序调整阈值幅度，扩散调整误差传播。0%等于无抖动，100%保持旧版结果。关闭抖动时禁用滑条。
-- 从等待连接、传图至屏幕刷新全程保持亮屏，成功、失败、取消和后台退出均清理；不修改系统休眠设置。
-- 原创黑白红像素SVG位于android/artwork/icon.svg，已转五档PNG和Adaptive Icon打入APK。
-- versionCode4，沿用同一开发签名，可覆盖安装；NFC时序和板端固件未改。构建与算法测试通过，新界面和常亮尚无手机实测。
+整理日期：2026-10-22。当前应用是开发签名的预发布版本；本次资料整理未改动板端固件和手机应用逻辑。
