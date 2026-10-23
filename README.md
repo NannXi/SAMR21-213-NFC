@@ -4,9 +4,9 @@ LG Innotek ESL TAG2.13B 的 **Keil5 C/ASM 固件 + 原生 Android 图片编辑�
 
 <img src="android/artwork/icon-preview.png" alt="墨屏黑白红像素图标" width="112">
 
-**当前组合：Android v0.1.4 + 板端固件 v0.1.2。** 用户已确认 v0.1.2 手机上传成功；v0.1.3/v0.1.4 的新界面、固定预览与常亮仍待手机验收。
+**当前组合：Android v0.1.5 + 板端固件 v0.1.2。** 用户已确认旧版手机上传成功；v0.1.5 在提交 ACK 后显示“等待屏幕刷新”，可点“OK，可以拿开手机”，由主板继续刷新。
 
-[下载 APK](https://github.com/NannXi/SAMR21-213-NFC/releases/download/v0.1.4/epaper-nfc-v0.1.4-debug.apk) · [下载板端 v0.1.2](https://github.com/NannXi/SAMR21-213-NFC/releases/tag/v0.1.2) · [版本与校验](docs/RELEASES.md) · [快速开始](docs/GETTING_STARTED.md)
+[下载 APK](https://github.com/NannXi/SAMR21-213-NFC/releases/download/v0.1.5/epaper-nfc-v0.1.5-debug.apk) · [下载板端 v0.1.2](https://github.com/NannXi/SAMR21-213-NFC/releases/tag/v0.1.2) · [版本与校验](docs/RELEASES.md) · [快速开始](docs/GETTING_STARTED.md)
 
 ## 使用流程
 
@@ -14,9 +14,9 @@ LG Innotek ESL TAG2.13B 的 **Keil5 C/ASM 固件 + 原生 Android 图片编辑�
 2. 手机安装应用并打开 NFC。Android 8.0/API26 以上，需要 NFC-A；不需要 root 或 Shizuku。
 3. 在固定的圆角预览中看效果；在“图像调整”里选图、顺时针旋转 90°、缩放并拖动裁切。
 4. 调整亮度、对比度、黑白红/黑白、关闭/有序/扩散抖动，以及 0–100% 抖动强度。
-5. 点击“上传到墨水屏”，按提示靠近线圈。识别后保持位置，等待传输和刷新完成，再移开手机。
+5. 点击“上传到墨水屏”，按提示靠近线圈。识别后保持位置，等待传输和提交 ACK；出现“等待屏幕刷新”后点“OK，可以拿开手机”，主板会继续刷新。
 
-等待连接、传图、刷新期间应用保持亮屏，完成、取消、失败或进入后台后释放。应用只申请 NFC 权限；系统文件选择器授予单张图片访问，不申请联网、照片库或存储权限。
+等待连接和传图期间应用保持亮屏；收到提交 ACK 后释放 NFC 和常亮，刷新提示由 OK 按钮关闭。失败、取消或进入后台也会清理。应用只申请 NFC 权限；系统文件选择器授予单张图片访问，不申请联网、照片库或存储权限。
 
 预览是三色实际像素，不能代表实物反射对比度。图片亮度/对比度不会调节屏幕电压；本板物理偏淡问题仍存在。
 
@@ -32,7 +32,7 @@ LG Innotek ESL TAG2.13B 的 **Keil5 C/ASM 固件 + 原生 Android 图片编辑�
 | [架构](docs/ARCHITECTURE.md) / [协议](docs/PROTOCOL.md) | 图片处理、RF/SRAM 交接、双平面和 64 字节帧 |
 | [硬件与验证](docs/HARDWARE_AND_VALIDATION.md) | 证据文件、手机反馈与未验证事项 |
 | [测试](tests/README.md) | Java 核心测试、离线仓库检查、实板测试边界 |
-| [更新记录](docs/CHANGELOG.md) | 从 v0.1.0 到 v0.1.4 的修订 |
+| [更新记录](docs/CHANGELOG.md) | 从 v0.1.0 到 v0.1.5 的修订 |
 | [贡献说明](CONTRIBUTING.md) / [来源说明](NOTICE.md) | 复核流程、反馈、许可证边界 |
 
 原始照片、完整主板资源、原厂固件分析与最初显示工程位于 [SAMR21-213-EPaper](https://github.com/NannXi/SAMR21-213-EPaper)。两个工程各自保留匹配的 AXF 和下载工具，避免交叉使用 RAM 地址。
@@ -41,7 +41,7 @@ LG Innotek ESL TAG2.13B 的 **Keil5 C/ASM 固件 + 原生 Android 图片编辑�
 
 | 已确认 | 尚待验证或实现 |
 |---|---|
-| 用户反馈 v0.1.2 手机端到端上传成功 | v0.1.4 布局与常亮实机验收、多机兼容、吞吐和移场恢复 |
+| 用户反馈旧版手机端到端上传成功；v0.1.5 ACK 后取机流程已实现 | v0.1.5 新 APK 回归、多机兼容、吞吐和移场恢复 |
 | 实板 SRAM 整图 5512 字节、重复包、偏移/CRC 拒收、刷新与 DONE | VCC 跌落时 RF 镜像恢复、稳定性与续航测量 |
 | 完整 Flash 回读、未写区/辅助区、NFC EEPROM 比对 | NFC 精确芯片料号、屏幕驱动 IC |
 | Android 构建、v2/v3 签名、核心算法测试 | NFC 单独供能刷新、整机低功耗、掉电保存、断点续传 |

@@ -30,10 +30,10 @@
 | [firmware_flash_validation.json](firmware_flash_validation.json) | 完整 Flash 回读、未写区和辅助区一致、刷新结束 | 手机 RF 仲裁、长期运行 |
 | [hardware_protocol_validation.json](hardware_protocol_validation.json) | SWD 请求 MCU 经真实 I²C/SRAM 整图接收、重复包、偏移/CRC 拒收、刷新/DONE、EEPROM 比对 | 手机 RF 端到端 |
 | [stability_validation.json](stability_validation.json) | 对应记录时长内的板端检查 | 长期稳定性、整机续航 |
-| [android_build_validation.json](android_build_validation.json) | v0.1.4 构建、签名、Java 核心测试与布局源码核对 | 实机新 UI、常亮及兼容性 |
+| [android_build_validation.json](android_build_validation.json) | v0.1.5 APK构建、签名、Java核心测试与静态流程检查 | 实机新 UI、常亮及兼容性 |
 | 用户 2026-10-21 反馈“可以了” | v0.1.2 手机上传成功；之前失败报告手机为 Android 17 / Xiaomi 24129PN74C | 多手机、多次成功率、吞吐、掉电/离场恢复 |
 
-手机成功反馈记录自本次协作，未另附可供重放的成功 RF 抓包或 ADB 日志。v0.1.3/v0.1.4 没有修改 NFC 时序，但新增 UI 和常亮尚待用户确认；不能把构建成功写成实机验收通过。
+手机成功反馈记录自本次协作，未另附可供重放的成功 RF 抓包或 ADB 日志。v0.1.3/v0.1.4 没有修改 NFC 时序。v0.1.5 在 COMMIT ACK（状态2，已进入刷新）后立即关闭手机 NFC 轮询和常亮，不再读 DONE；这是用户根据上一版实物观察提出的流程修改，尚待新APK验收。不能把构建成功写成实机验收通过。
 
 COMMIT 时显示驱动阻塞，调试邮箱同在主循环，测试脚本不能在刷新中同时通过该邮箱访问。历史 COMMIT ACK 的发布由 RAM 标志辅助核对，DONE 在刷新完成后通过真实 I²C/SRAM 读回。
 
@@ -64,7 +64,7 @@ aa2fadb624c42d9080efaa951cda56df7e70629cf3d91661896b21ebaacf4b55
 
 ## 接下来如何验收
 
-1. 在 v0.1.4 确认固定预览、选图、旋转、拖动裁切、亮度/对比度和抖动强度。
+1. 在 v0.1.5 确认固定预览、选图、旋转、拖动裁切、图像参数和提交后的取机提示。
 2. 将系统休眠设短，验证等待贴近、传图与刷新期间常亮，结束/取消/后台后释放。
 3. 稳定供电下重复上传并记录成功率和时间；再单独测试移场恢复，避免同时改变多项条件。
 4. 使用电压/电流测量确认供电边界后，再安排掉电、低功耗与能量采集实验。

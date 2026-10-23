@@ -1,9 +1,9 @@
 {
-  "date": "2026-10-21",
-  "version": "0.1.4",
-  "version_code": 5,
+  "date": "2026-10-23",
+  "version": "0.1.5",
+  "version_code": 6,
   "application_label": "墨屏",
-  "apk_sha256": "b7cddf0c448169515f5a34b47203571f9801a6b088642ec52b2b9cb93513fb9d",
+  "apk_sha256": "431fe1c7bde3d00d8382eac59ec18980342bba48fe22dcc5a5d3dc76268cd939",
   "signature_schemes": [
     "v2",
     "v3"
@@ -28,5 +28,12 @@
   "phone_upload_v0_1_4": "Pending user test",
   "fixed_preview_layout_source_check": true,
   "controls_in_adjustment_card_source_check": true,
-  "rotation_arrow_continuity_source_check": true
+  "rotation_arrow_continuity_source_check": true,
+  "phone_upload_v0_1_5": "Pending user test",
+  "post_commit_rf_polling": false,
+  "post_commit_keep_screen_on": false,
+  "commit_ack_status_required": 2,
+  "commit_ack_ui_prompt": "等待屏幕刷新",
+  "commit_ack_button": "OK，可以拿开手机",
+  "refresh_done_polling": "removed from phone; MCU refresh continues"
 }

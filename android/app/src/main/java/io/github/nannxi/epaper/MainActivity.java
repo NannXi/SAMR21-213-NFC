@@ -237,7 +237,7 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
                 .setMessage(
                     "图片编辑与 NFC 上传\n\n"
                         + "2.13 英寸 · 212 × 104 · 黑白红\n"
-                        + "版本 0.1.4\n\n"
+                        + "版本 0.1.5\n\n"
                         + "上传期间保持主板供电，手机靠近背面的 NFC 线圈。")
                 .setPositiveButton("知道了", null)
                 .show());
@@ -631,7 +631,7 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
                           dialogTitle.setText("请勿移动手机");
                           dialogText.setText("墨水屏已连接，正在传输图片。");
                           dialogPercent.setText("0%");
-                          dialogStep.setText("✓ 已连接     ·     正在传图     ·     等待刷新");
+                          dialogStep.setText("✓ 已连接     ·     正在传图     ·     等待提交");
                         });
                   }
 
@@ -643,27 +643,29 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
                         });
                   }
 
-                  public void refreshing() {
+                  public void submitted() {
                     transferUi(
                         () -> {
+                          waiting = false;
+                          disableReader();
+                          keepScreen(false);
                           progress.setProgress(100);
-                          dialogTitle.setText("正在刷新屏幕");
-                          dialogText.setText("图片已发送。刷新约需 15 秒，请继续保持位置。");
+                          dialogTitle.setText("等待屏幕刷新");
+                          dialogText.setText("图片已提交，屏幕正在刷新。可以拿开手机。");
                           dialogPercent.setText("100%");
-                          dialogStep.setText("✓ 已连接     ·     ✓ 已传图     ·     正在刷新");
-                        });
-                  }
-
-                  public void complete() {
-                    transferUi(
-                        () -> {
-                          status.setTextColor(GREEN);
-                          status.setText("上传完成 · 可以移开手机了");
-                          Toast.makeText(MainActivity.this, "墨水屏已刷新", Toast.LENGTH_SHORT).show();
+                          dialogStep.setText("✓ 已连接     ·     ✓ 已传图     ·     等待屏幕刷新");
+                          dialog.setCancelable(false);
+                          Button done = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                          done.setText("OK，可以拿开手机");
+                          done.setOnClickListener(
+                              v -> {
+                                finishDialog();
+                                status.setTextColor(GREEN);
+                                status.setText("图片已提交 · 屏幕正在刷新");
+                              });
                         });
                   }
                 });
-            runOnUiThread(() -> finishDialog());
           } catch (Exception e) {
             runOnUiThread(
                 () -> {

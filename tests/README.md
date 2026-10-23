@@ -36,6 +36,6 @@ python tests/hardware_mailbox.py
 
 ## 手机验收
 
-v0.1.2已收到用户上传成功反馈。v0.1.4固定预览、旋转图标、常亮以及多机/移场/掉电条件仍需实机数据，见[验收步骤](../docs/HARDWARE_AND_VALIDATION.md)。
+v0.1.2已收到用户上传成功反馈。v0.1.4固定预览、旋转图标、常亮以及v0.1.5 ACK后取机提示、多机/移场/掉电条件仍需实机数据，见[验收步骤](../docs/HARDWARE_AND_VALIDATION.md)。
 
 当前校验结果与实验报告分开存放，原始Flash/EEPROM备份和历史报告不因CI重新生成。

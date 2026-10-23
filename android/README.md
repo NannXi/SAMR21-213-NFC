@@ -1,6 +1,6 @@
 # Android 应用：墨屏
 
-原生 Java，Android 8/API26 起，目标 API35，无第三方运行库。当前 v0.1.4/versionCode 5，配套板端 v0.1.2。用户已确认 v0.1.2 手机上传成功；新界面和常亮待手机验收。
+原生 Java，Android 8/API26 起，目标 API35，无第三方运行库。当前 v0.1.5/versionCode 6，配套板端 v0.1.2。用户已确认 v0.1.2 手机上传成功；新界面和常亮待手机验收。
 
 ## 构建
 
@@ -10,7 +10,7 @@
 .\build.ps1 -JavaHome 'C:\Tools\jdk17' -AndroidSdk 'C:\Android\sdk' -BuildToolsVersion '35.0.0'
 ```
 
-无需 Android Studio 或 Gradle；脚本调用 javac、d8、aapt2、zipalign、apksigner，输出 `../releases/epaper-nfc-v0.1.4-debug.apk`，版本名自动读取 Manifest。
+无需 Android Studio 或 Gradle；脚本调用 javac、d8、aapt2、zipalign、apksigner，输出 `../releases/epaper-nfc-v0.1.5-debug.apk`，版本名自动读取 Manifest。
 
 默认在忽略的 `build/android-debug.keystore` 生成开发签名；可通过 `-KeyStore` 指定自己的已有密钥。只有同证书才能覆盖安装已发布 APK。SDK/JDK/私钥不入库，`android` 是标准调试口令，非生产签名配置。发布文件身份见[版本说明](../docs/RELEASES.md)。
 
@@ -22,7 +22,7 @@
 - 有序抖动缩放阈值偏移；扩散抖动缩放传播误差。0%等于不抖动，100%保持原算法输出。
 - 透明区域叠白底后转换，预览按实际三色像素绘制。
 - ReaderMode 仅点击上传后启用，跳过NDEF解析，识别签名/尺寸/UID/布局修订才写。
-- 等待、传输、刷新期间 FLAG_KEEP_SCREEN_ON；成功/失败/取消/后台清理。编辑控件在上传期间禁用。
+- 等待、传输期间 FLAG_KEEP_SCREEN_ON。固件COMMIT ACK进入刷新状态后停止ReaderMode并解除常亮，保留“等待屏幕刷新 / OK，可以拿开手机”确认页；不会等待DONE。失败/取消/后台清理。上传期间编辑控件禁用。
 - 错误弹窗提供查看/复制本地诊断，不自动上传日志。
 
 权限只有 NFC；不需要联网、存储、照片库、root、Shizuku 或 WAKE_LOCK。取消不能撤回已提交的物理刷新，退出后台会停止当前传输。
